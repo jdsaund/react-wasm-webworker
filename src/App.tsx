@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+import init, { greet } from 'wasm-worker'
+
 function App() {
+  useEffect(() => {
+    init().then(() => {
+      greet()
+    })
+  }, [])
+
   return (
     <div className="App">
       <header className="App-header">
