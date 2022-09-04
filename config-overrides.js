@@ -2,7 +2,6 @@ const path = require('path')
 
 module.exports = function override (config, env) {
   const wasmExtensionRegExp = /\.wasm$/
-  const workerRegExp = /\.worker\.js$/
 
   config.resolve.extensions.push('.wasm')
 
@@ -20,13 +19,6 @@ module.exports = function override (config, env) {
     test: wasmExtensionRegExp,
     include: path.resolve(__dirname, 'src'),
     use: [{ loader: require.resolve('wasm-loader'), options: {} }]
-  })
-
-  // Add a dedicated loader for WASM
-  config.module.rules.push({
-    test: workerRegExp,
-    include: path.resolve(__dirname, 'src'),
-    use: [{ loader: require.resolve('worker-loader'), options: {} }]
   })
 
   return config

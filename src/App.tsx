@@ -1,14 +1,21 @@
-import React, { useEffect } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import { wrap } from 'comlink'
+import logo from './logo.svg'
+import './App.css'
+import { WasmWorker } from './types'
 
-import init, { greet } from 'wasm-worker'
+/* eslint import/no-webpack-loader-syntax: off */
+import workerScriptUrl from 'worker-plugin/loader?filename=[name].[contenthash].web.worker.js!./workers/web.worker'
+
+const worker = new Worker(workerScriptUrl)
+console.log(worker)
+const { reverseString } = wrap<WasmWorker>(worker)
 
 function App() {
+  const [value, setValue] = useState<string>('Learn React')
+
   useEffect(() => {
-    init().then(() => {
-      greet()
-    })
+    reverseString(value).then(setValue)
   }, [])
 
   return (
@@ -24,7 +31,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          {value}
         </a>
       </header>
     </div>
