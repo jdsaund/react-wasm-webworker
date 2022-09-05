@@ -8,14 +8,13 @@ import { WasmWorker } from './types'
 import workerScriptUrl from 'worker-plugin/loader?filename=[name].[contenthash].web.worker.js!./workers/web.worker'
 
 const worker = new Worker(workerScriptUrl)
-console.log(worker)
-const { reverseString } = wrap<WasmWorker>(worker)
+const { initialize, reverseString } = wrap<WasmWorker>(worker)
 
 function App() {
   const [value, setValue] = useState<string>('Learn React')
 
   useEffect(() => {
-    reverseString(value).then(setValue)
+    initialize().then(() => reverseString(value)).then(setValue)
   }, [])
 
   return (

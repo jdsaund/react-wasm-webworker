@@ -9,11 +9,13 @@ use wasm_bindgen::prelude::*;
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
 #[wasm_bindgen]
-extern {
+extern "C" {
+    #[wasm_bindgen(js_namespace = console)]
+    fn log(s: &str);
     fn alert(s: &str);
 }
 
 #[wasm_bindgen]
-pub fn greet() {
-    alert("Hello, wasm-worker!");
+pub fn reverse_string(value: String) -> String {
+    value.chars().rev().collect::<String>()
 }
